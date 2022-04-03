@@ -3,29 +3,39 @@
 import {useState} from 'react';
 function App() {
   const [calc,setCalc] = useState('')
-  const [result,setResut] = useState('')
+  const [result,setResult] = useState('')
 
   const ops = ['/','*','+','-']
   const updateCalc =value=>{
-    setCalc(calc + value);
-  }
-  const handleClick=(e)=>{
-      console.log('hello')
+    if(calc==='' && ops.includes(value) || ops.includes(value)&&ops.includes(calc.slice(-1))){
+      return
     }
+    setCalc(calc + value);
+    console.log(typeof calc)
+  }
+  // const handleClick=(e)=>{
+  //     console.log('hello')
+  // }
 
   const handleNumbers = ()=>{
     const nums = []
     for(let i = 0; i<10;i++){
-      nums.push(<button onClick = {handleClick}key={i} className = {i}>{i}</button>)
+      nums.push(<button onClick={()=>updateCalc(i.toString())} className = {i} key={i}>{i}</button>)
     }
     return nums;
   }
   const handleOps = ()=>{
     const jsxOps = []
     for(let i = 0; i < ops.length; i++){
-      jsxOps.push(<button onClick={()=>updateCalc(ops[i])} key={i}>{ops[i]}</button>)
+      jsxOps.push(<button onClick={()=>updateCalc(ops[i])} key={ops[i]}>{ops[i]}</button>)
     }
     return jsxOps
+  }
+  const handleResult =(calc)=>{
+    console.log(calc)
+    // eslint-disable-next-line no-eval
+    // return setResult(eval("(" + calc + ")"))
+    // console.log(typeof clac)
   }
   
   return (
@@ -40,16 +50,13 @@ function App() {
         <div className="base">
           <div className="operators">
             {handleOps()}
-            {/* <button>/</button>
-            <button>*</button>
-            <button>+</button>
-            <button>-</button>
-            <button>=</button> */}
+
           </div>
-            <div className="digits">
-              {handleNumbers()}
-            </div>
+          <div className="digits">
+            {handleNumbers()}
+          </div>
         </div>
+        <button onClick={()=>handleResult(calc)}>=</button>
 
       </div>
     </div>
